@@ -9,7 +9,7 @@ LIBS = $(OPENCV)
 all:$(PROG)
 
 $(PROG):$(SRCS)
-	$(CC) $(CFLAGS) -fopenmp -g -o $(PROG) $(SRCS) $(LIBS)
+	$(CC) $(CFLAGS) -fopenmp -o $(PROG) $(SRCS) $(LIBS)
 
 clean:
 	rm -f $(PROG)

@@ -15,7 +15,7 @@ using namespace std;
 
 void usage() {
     cout << "\nInvalid parameters, please call: " << endl;
-    cout << "Carver <mode> <amount> <image>" << endl;
+    cout << "Carver <mode> <amount> <imagepath> <outputpath>" << endl;
     cout << "Mode can be either vertical, horizontal or both" << endl;
     cout << "Amount is the target scale factor (0-1)" << endl;
 }
@@ -50,7 +50,7 @@ void argparse(char *input[], carver::CarveMode &carveMode, float &carveAmount) {
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 4) {
+    if (argc != 5) {
         terminate(1);
     }
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     carver.setVisualMode(false);
     carver.setCarveMode(carveMode);
     carver.setCarveAmount(carveAmount);
-    carver.carveImage();
+    carver.carveImage(argv[4]);
 
     return 0;
 }
