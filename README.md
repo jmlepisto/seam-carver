@@ -1,7 +1,7 @@
 # seam-carver
 #### Work in progress!
-OpenCV based utility for efficient content-aware scaling.
-Includes a basic wrapper for user input but the main focus is on the functionality under the hood. Feel free to add any GUI bindings for easy usage.
+OpenCV based utility for **efficient** content-aware scaling.
+Includes a basic wrapper for user control but the main focus is on the underlying functional `Carver` class. Feel free to add any GUI bindings or an advanced CLI for easy usage.
 
 Basic usage:
 
