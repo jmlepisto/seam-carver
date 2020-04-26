@@ -138,8 +138,6 @@ namespace carver {
 
     vector<int> Carver::getSeamToRemove(cv::Mat &energyMap, CarveMode direction) {
         // Intermediate variables needed by the algorithm.
-        // cumulativeEnergyMap is allocated statically right away to resolve performance issues
-        // related to changing the matrix size while iterating.
         cv::Mat source;
         cv::Mat cumulativeEnergyMap;
         cv::Mat result;
