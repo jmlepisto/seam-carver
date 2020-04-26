@@ -16,6 +16,7 @@ void usage() {
     cout << "input path has to be given as the last argument" << endl;
     cout << "Optional arguments:" << endl;
     cout << "-c        carve amount, removes given proportion of pixels from side length (0-1)" << endl;
+    cout << "-v        add verbosity" << endl;
     cout << "-h        print this help" << endl;
 }
 
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]) {
     if (!carveModeOpt)
         terminate(1, "Carve mode value missing");
     string carveModeStr(carveModeOpt);
-    optionCount++;
+    optionCount+=2;
     if (carveModeStr == "both")
         carveMode = carver::BOTH;
     else if (carveModeStr == "vertical")
@@ -75,7 +76,7 @@ int main(int argc, char *argv[]) {
     if (!outputOpt)
         terminate(1, "Output path missing");
     string outputStr(outputOpt);
-    optionCount++;
+    optionCount+=2;
 
     // Carve amount
     float carveAmount;
@@ -85,25 +86,31 @@ int main(int argc, char *argv[]) {
     else
         try {
             carveAmount = stof(string(carveAmountOpt));
-            optionCount++;
+            optionCount+=2;
         } catch (invalid_argument&) {
             terminate(1, "Invalid argument for carve amount");
         }
 
-    if (argc < optionCount*2 + 2)
+    // Verbosity
+    bool verbose = false;
+    if(cmdOptionExists(argv, argv+argc, "-v")) {
+        verbose = true;
+        optionCount++;
+    }
+
+    if (argc < optionCount + 2)
         terminate(1, "input path not provided");
-    string filename = argv[optionCount*2 + 1];
+    string filename = argv[optionCount + 1];
 
     // Instantiate carver
     carver::Carver carver;
-
+    carver.setVerbosity(verbose);
+    carver.setCarveMode(carveMode);
+    carver.setCarveAmount(carveAmount);
     if(!carver.loadTargetImage(filename)) {
         terminate(1, "Image loading failed, please provide path as the last argument");
     }
 
-    carver.setVisualMode(false);
-    carver.setCarveMode(carveMode);
-    carver.setCarveAmount(carveAmount);
     carver.carveImage(outputStr);
 
     return 0;

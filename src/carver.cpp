@@ -7,7 +7,21 @@ namespace carver {
     }
 
     void Carver::log(string message) {
-        cout << message << endl;
+        log(message, false);
+    }
+
+    void Carver::log(string message, bool overwrite) {
+        if (verbose) {
+            if (overwrite)
+                cout << "\r" << message << flush;
+            else
+                cout << message << endl;
+        }
+
+    }
+
+    void Carver::setVerbosity(bool verbose) {
+        this->verbose = verbose;
     }
 
     bool Carver::loadTargetImage(string filepath) {
@@ -33,10 +47,6 @@ namespace carver {
         } else {
             this->carveAmount = carveAmount;
         }
-    }
-
-    void Carver::setVisualMode(bool visualMode) {
-        this->visualMode = visualMode;
     }
 
     cv::Mat Carver::calculateEnergy(cv::Mat &source) {
@@ -195,6 +205,13 @@ namespace carver {
     void Carver::carveImage(string outputPath) {
         cv::Mat target = carveImage();
         cv::imwrite(outputPath, target);
+        log("Saved output image as " + outputPath);
+    }
+
+    void Carver::printStatus(int h, int v) {
+        string vStatus = v+1 > vIterations ? "READY" : to_string(v) + "/" + to_string(vIterations);
+        string hStatus = h+1 > hIterations ? "READY      " : to_string(h) + "/" + to_string(hIterations);
+        log("Processing column " + vStatus  + " and row " + hStatus , true);
     }
 
     cv::Mat Carver::carveImage() {
@@ -206,8 +223,8 @@ namespace carver {
         hIterations = carveMode == BOTH || carveMode == HORIZONTAL ?
                     static_cast<int>(imageRows * carveAmount): 0;
 
-        log("Removing " + to_string(vIterations) + " vertical and " +
-            to_string(hIterations) + " horizontal rows");
+        log("Removing " + to_string(vIterations) + " columns and " +
+            to_string(hIterations) + " rows");
 
         cv::Mat grayscale;
         cv::Mat energyMap;
@@ -250,7 +267,9 @@ namespace carver {
                 target = removeHorizontalSeam(target, horizontalSeam);
                 h++;
             }
+            printStatus(h, v);
         }
+        log("");
         return target;
     }
 }

@@ -33,6 +33,12 @@ namespace carver {
         Carver();
 
         /**
+         * @brief setVerbosity sets this class to print information on stdout
+         * @param verbose verbosity state
+         */
+        void setVerbosity(bool verbose);
+
+        /**
          * @brief imread loads the given image as the carving target
          * @param filepath image path
          * @return true if image loading succeeded
@@ -50,12 +56,6 @@ namespace carver {
          * @param carveAmount carve amount to set (0-1)
          */
         void setCarveAmount(float carveAmount) noexcept(false);
-
-        /**
-         * @brief setVisualMode sets the carver to run in either visual or headless mode
-         * @param visualMode wether to run in visual mode
-         */
-        void setVisualMode(bool visualMode);
 
         /**
          * @brief carveImage runs the carving iterations and returns the reduced image
@@ -112,10 +112,10 @@ namespace carver {
         CarveMode carveMode;
         int imageRows;
         int imageCols;
-        int vIterations = 0;
-        int hIterations = 0;
+        int vIterations;
+        int hIterations;
         float carveAmount;
-        bool visualMode;
+        bool verbose = false;
 
         // Image processing configuration
         bool blur = true;
@@ -135,6 +135,13 @@ namespace carver {
          * @param message to be printed
          */
         void log(string message);
+
+        /**
+         * @brief log prints out message with optionally overwriting existing stdout line
+         * @param message to be printed
+         * @param overwrite should stdout be overwritten
+         */
+        void log(string message, bool overwrite);
 
 
         /**
@@ -174,6 +181,8 @@ namespace carver {
          * @return reduced target image
          */
         cv::Mat removeSeam(cv::Mat &source, vector<int> seam);
+
+        void printStatus(int h, int v);
 
 
 
