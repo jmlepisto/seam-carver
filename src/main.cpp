@@ -46,14 +46,13 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option, bool 
 
 int main(int argc, char *argv[]) {
 
+    int optionCount = 0;
+
     // Request for help
     if (cmdOptionExists(argv, argv+argc, "-h")) {
             usage();
             return 0;
     }
-
-    // Input filename is the last argument
-    string filename = argv[argc - 1];
 
     // Carve mode
     carver::CarveMode carveMode;
@@ -61,6 +60,7 @@ int main(int argc, char *argv[]) {
     if (!carveModeOpt)
         terminate(1, "Carve mode value missing");
     string carveModeStr(carveModeOpt);
+    optionCount++;
     if (carveModeStr == "both")
         carveMode = carver::BOTH;
     else if (carveModeStr == "vertical")
@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
     if (!outputOpt)
         terminate(1, "Output path missing");
     string outputStr(outputOpt);
+    optionCount++;
 
     // Carve amount
     float carveAmount;
@@ -84,10 +85,14 @@ int main(int argc, char *argv[]) {
     else
         try {
             carveAmount = stof(string(carveAmountOpt));
+            optionCount++;
         } catch (invalid_argument&) {
             terminate(1, "Invalid argument for carve amount");
         }
 
+    if (argc < optionCount*2 + 2)
+        terminate(1, "input path not provided");
+    string filename = argv[optionCount*2 + 1];
 
     // Instantiate carver
     carver::Carver carver;
