@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall
 SRCS = src/*.cpp
-PROG = Carver.run
+PROG = carver
 
 OPENCV = `pkg-config opencv4 --cflags --libs`
 LIBS = $(OPENCV)
