@@ -8,6 +8,8 @@ Basic usage:
 
 ```carver -m <mode> -o <output_path> <input_path>```
 
+Building depends on OpenCV4 and the associted `pkg-config` file.
+
 #### How does it work?
 [Wikipedia](https://en.wikipedia.org/wiki/Seam_carving) includes a decent explanation on the topic. The basic idea is to 
 pick a method to assign an importance value to each pixel and then locate the least important seams through the image. This
