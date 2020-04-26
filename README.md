@@ -5,7 +5,7 @@ Includes a basic wrapper for user input but the main focus is on the functionali
 
 Basic usage:
 
-```Carver.run <mode: vertical/horizontal/both> <scale factor: 0-1> <input path> <output path>```
+```carver -m <mode> -o <output_path> <input_path>```
 
 #### How does it work?
 [Wikipedia](https://en.wikipedia.org/wiki/Seam_carving) includes a decent explanation on the topic. The basic idea is to 
