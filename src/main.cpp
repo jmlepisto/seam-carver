@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-
 void usage() {
     cout << "Usage: carver OPTION... INPUT" << endl;
     cout << "Mandatory arguments:" << endl;
