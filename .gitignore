@@ -1,0 +1,9 @@
+*.cflags
+*.config
+*.cxxflags
+*.files
+*.includes
+*.creator
+*.user
+*.jpg
+*.run

@@ -1,15 +1,15 @@
 CC = g++
 CFLAGS = -g -Wall
 SRCS = src/*.cpp
-PROG = Carver
+PROG = Carver.run
 
-OPENCV = \
--I /usr/local/include/opencv4 \
--L /usr/lib \
--lopencv_core \
--lopencv_imgproc \
-
+OPENCV = `pkg-config opencv4 --cflags --libs`
 LIBS = $(OPENCV)
 
+all:$(PROG)
+
 $(PROG):$(SRCS)
-	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)
+	$(CC) $(CFLAGS) -fopenmp -g -o $(PROG) $(SRCS) $(LIBS)
+
+clean:
+	rm -f $(PROG)
