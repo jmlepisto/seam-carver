@@ -6,6 +6,7 @@
 *.creator
 *.user
 *.jpg
+*.jpeg
 *.run
 !images/*.jpg
 carver
