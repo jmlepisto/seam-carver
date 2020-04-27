@@ -20,6 +20,10 @@ Asynchronous C++ threading and  OpenMP are both used for better performance. The
 
 ```#define CONCURRENT```
 
+Processing small images is quite swift but bear in mind that the actual complexity of this algorithm is in the range of
+
+![image](https://latex.codecogs.com/gif.latex?O%28W%24%5Ctimes%24H&plus;W&plus;H%29)
+
 
 #### Example output when running in vertical mode
 ![image](https://user-images.githubusercontent.com/36196504/80315324-72c2ca00-87ff-11ea-97c0-80c9b8d8c2aa.jpg)
