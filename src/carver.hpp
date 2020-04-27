@@ -48,10 +48,16 @@ namespace carver {
         void setCarveMode(CarveMode carveMode) noexcept(false);
 
         /**
-         * @brief setCarveAmount sets carve amount for the target
+         * @brief setCarveAmount sets carve amount for the target as proportional to side length
          * @param carveAmount carve amount to set (0-1)
          */
         void setCarveAmount(float carveAmount) noexcept(false);
+
+        /**
+         * @brief setCarveCount sets the carve count for the target as absolute pixels
+         * @param carveCount number of pixels to carve from side length
+         */
+        void setCarveCount(int carveCount) noexcept(false);
 
         /**
          * @brief carveImage runs the carving iterations and returns the reduced image
@@ -111,6 +117,7 @@ namespace carver {
         int vIterations;
         int hIterations;
         float carveAmount;
+        int carveCount;
         bool verbose = false;
 
         // Image processing configuration

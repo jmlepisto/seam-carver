@@ -49,6 +49,13 @@ namespace carver {
         }
     }
 
+    void Carver::setCarveCount(int carveCount) {
+        if (carveCount < 0) {
+            throw out_of_range("Carve count out of range being negative");
+        }
+        this->carveCount = carveCount;
+    }
+
     cv::Mat Carver::calculateEnergy(cv::Mat &source) {
         cv::Mat xGradient;
         cv::Mat yGradient;
@@ -216,10 +223,24 @@ namespace carver {
         // Set the iteration counters and max values
         int v = 0;
         int h = 0;
-        vIterations = carveMode == BOTH || carveMode == VERTICAL ?
-                    static_cast<int>(imageCols * carveAmount) : 0;
-        hIterations = carveMode == BOTH || carveMode == HORIZONTAL ?
-                    static_cast<int>(imageRows * carveAmount): 0;
+
+        if (!carveCount) {
+            vIterations = carveMode == BOTH || carveMode == VERTICAL ?
+                        static_cast<int>(imageCols * carveAmount) : 0;
+            hIterations = carveMode == BOTH || carveMode == HORIZONTAL ?
+                        static_cast<int>(imageRows * carveAmount): 0;
+        } else {
+            vIterations = carveMode == BOTH || carveMode == VERTICAL ?
+                        carveCount : 0;
+            hIterations = carveMode == BOTH || carveMode == HORIZONTAL ?
+                        carveCount : 0;
+
+            if (!(hIterations < imageRows) || !(vIterations < imageCols))
+                throw (out_of_range("Number of pixels to carve " + to_string(carveCount) +
+                                    " out of range for image of size " +
+                                    to_string(imageCols) + "x" + to_string(imageRows)));
+        }
+
 
         log("Removing " + to_string(vIterations) + " columns and " +
             to_string(hIterations) + " rows");

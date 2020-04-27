@@ -13,7 +13,8 @@ void usage() {
     cout << "-o        output path" << endl;
     cout << "input path has to be given as the last argument" << endl;
     cout << "Optional arguments:" << endl;
-    cout << "-c        carve amount, removes given proportion of pixels from side length (0-1)" << endl;
+    cout << "-p        carve amount, removes given proportion of pixels from side length (0-1)" << endl;
+    cout << "-c        carve amount, removes given number of pixels from side length" << endl;
     cout << "-v        add verbosity" << endl;
     cout << "-h        print this help" << endl;
 }
@@ -43,14 +44,14 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option, bool 
     return 0;
 }
 
-int main(int argc, char *argv[]) {
+void setCmdOptionsAndRun(carver::Carver &carver, int argc, char *argv[]) {
 
     int optionCount = 0;
 
     // Request for help
     if (cmdOptionExists(argv, argv+argc, "-h")) {
             usage();
-            return 0;
+            exit(0);
     }
 
     // Carve mode
@@ -69,6 +70,8 @@ int main(int argc, char *argv[]) {
     else
         terminate(1, "Carve mode value invalid");
 
+    carver.setCarveMode(carveMode);
+
     // Output path
     char* outputOpt = getCmdOption(argv, argv+argc, "-o", true);
     if (!outputOpt)
@@ -76,18 +79,40 @@ int main(int argc, char *argv[]) {
     string outputStr(outputOpt);
     optionCount+=2;
 
-    // Carve amount
-    float carveAmount;
-    char* carveAmountOpt = getCmdOption(argv, argv+argc, "-c", false);
-    if (!carveAmountOpt)
+    // Carve amount, absolute count
+    int carveCount = 0;
+    char* carveCountOpt = getCmdOption(argv, argv+argc, "-c", false);
+    if (carveCountOpt) {
+        carveCount = atoi(carveCountOpt);
+        optionCount+=2;
+        if (carveCount == 0) {
+            terminate(1, "Invalid argument for carve count");
+        }
+    }
+
+    // Carve amount, proportional
+    float carveAmount = 0.0f;
+    char* carveAmountOpt = getCmdOption(argv, argv+argc, "-p", false);
+    if (!carveAmountOpt && !carveCount) {
         carveAmount = 0.15f;
-    else
+    } else if (carveAmountOpt) {
         try {
             carveAmount = stof(string(carveAmountOpt));
             optionCount+=2;
+            if (carveAmount == 0.0f) {
+                terminate(1, "Invalid argument for carve amount");
+            }
         } catch (invalid_argument&) {
             terminate(1, "Invalid argument for carve amount");
         }
+    }
+
+    if (carveAmountOpt && carveCountOpt)
+        terminate(1, "Invalid combination of arguments -p and -c");
+
+    carver.setCarveAmount(carveAmount);
+    carver.setCarveCount(carveCount);
+
 
     // Verbosity
     bool verbose = false;
@@ -95,21 +120,22 @@ int main(int argc, char *argv[]) {
         verbose = true;
         optionCount++;
     }
+    carver.setVerbosity(verbose);
 
+    // Load target image
     if (argc < optionCount + 2)
         terminate(1, "input path not provided");
     string filename = argv[optionCount + 1];
 
-    // Instantiate carver
-    carver::Carver carver;
-    carver.setVerbosity(verbose);
-    carver.setCarveMode(carveMode);
-    carver.setCarveAmount(carveAmount);
     if(!carver.loadTargetImage(filename)) {
         terminate(1, "Image loading failed, please provide path as the last argument");
     }
 
     carver.carveImage(outputStr);
+}
 
+int main(int argc, char *argv[]) {
+    carver::Carver carver;
+    setCmdOptionsAndRun(carver, argc, argv);
     return 0;
 }
