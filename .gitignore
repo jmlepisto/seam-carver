@@ -10,3 +10,7 @@
 *.run
 !images/*.jpg
 carver
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+CMakeFiles/*
