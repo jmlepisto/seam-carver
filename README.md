@@ -1,6 +1,6 @@
 # seam-carver
 #### Work in progress!
-OpenCV based utility for **efficient** content-aware scaling.
+OpenCV4 based utility for **efficient** content-aware scaling.
 Includes a basic wrapper for user control but the main focus is on the underlying `Carver` class which is used for the actual image processing. 
 Feel free to add any GUI bindings or an advanced CLI for easy usage.
 
@@ -8,7 +8,7 @@ Basic usage:
 
 ```carver -m <mode> -o <output_path> <input_path>```
 
-Building depends on OpenCV4 and the associted `pkg-config` file.
+Building depends on OpenCV4 and the associated `pkg-config` file. Static build options under development.
 
 #### How does it work?
 [Wikipedia](https://en.wikipedia.org/wiki/Seam_carving) includes a decent explanation on the topic. The basic idea is to 
