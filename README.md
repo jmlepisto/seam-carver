@@ -17,7 +17,7 @@ the image to achieve best possible quality.
 Asynchronous C++ threading and  OpenMP are both used for performance gains. The effect of these really comes to shine when
 carving larger images in both directions.
 
-Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm is in the range of
+Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm by image width and height is in the range of
 
 ![image](https://latex.codecogs.com/gif.latex?O%28W%24%5Ctimes%24H&plus;W&plus;H%29)
 
