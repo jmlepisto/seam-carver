@@ -9,6 +9,7 @@
 #include <future>
 
 #define CONCURRENT
+#define N_THREADS 2
 
 using namespace std;
 
@@ -169,6 +170,8 @@ namespace carver {
          * @param cumulativeEnergyMap target cumulative energy map
          */
         void calculateCumulativePixel(int r, int c, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap);
+
+        void calculateCumulativePixelRange(int r0, int r1, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap);
 
         /**
          * @brief calculateLowestEnergyPath calculates lowest energy path from top of the given cumulative energy map to the bottom

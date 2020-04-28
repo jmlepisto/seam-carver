@@ -20,6 +20,12 @@ namespace carver {
 
     }
 
+    void Carver::printStatus(int h, int v) {
+        string vStatus = v+1 > vIterations ? "READY" : to_string(v) + "/" + to_string(vIterations);
+        string hStatus = h+1 > hIterations ? "READY      " : to_string(h) + "/" + to_string(hIterations);
+        log("Processing column " + vStatus  + " and row " + hStatus , true);
+    }
+
     void Carver::setVerbosity(bool verbose) {
         this->verbose = verbose;
     }
@@ -83,19 +89,47 @@ namespace carver {
         cumulativeEnergyMap.at<double>(r, c) = energyMap.at<double>(r, c) + std::min(pre0, min(pre1, pre2));
     }
 
-    cv::Mat Carver::calculateCumulativeEnergy(cv::Mat &source) {
-        int sourceRows = source.rows;
-        int sourceCols = source.cols;
-        cv::Mat target = cv::Mat(sourceRows, sourceCols, CV_64F, double(0));
-        source.row(0).copyTo(target.row(0));
+    void Carver::calculateCumulativePixelRange(int r0, int r1, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap) {
+        for (int r = r0; r < r1; r++ ) {
+            for (int c = 0; c < energyMap.cols; c++) {
+                calculateCumulativePixel(r, c, energyMap, cumulativeEnergyMap);
+            }
+        }
+    }
+
+    cv::Mat Carver::calculateCumulativeEnergy(cv::Mat &energyMap) {
+        vector<thread> workers;
+        cv::Mat target = cv::Mat(energyMap.rows, energyMap.cols, CV_64F, double(0));
+        energyMap.row(0).copyTo(target.row(0));
 
         #ifdef CONCURRENT
-        #pragma omp parallel for schedule(static) collapse(2) num_threads(2)
-        #endif
-        for (int r = 1; r < sourceRows; r++) {
-            for (int c = 0; c < sourceCols; c++) {
-                calculateCumulativePixel(r, c, source, target);
+        log("Running with " +to_string(N_THREADS) + " threads");
+        int chunkSize = energyMap.rows / N_THREADS;
+        int leftOver = energyMap.rows % N_THREADS;
+        for (int i = 0; i < N_THREADS; i++) {
+            int startIdx = i * chunkSize + 1;
+            int stopIdx;
+            if (i == N_THREADS - 1) {
+                stopIdx = startIdx + chunkSize + leftOver - 1;
+            } else {
+                stopIdx = startIdx + chunkSize - 1;
             }
+
+            workers.push_back(thread([this, startIdx, stopIdx, &energyMap, &target] {
+                return calculateCumulativePixelRange(startIdx, stopIdx, energyMap, target);
+            }));
+        }
+
+        #else
+        for (int r = 1; r < energyMap.rows; r++) {
+            for (int c = 0; c < energyMap.cols; c++) {
+                calculateCumulativePixel(r, c, energyMap, target);
+            }
+        }
+        #endif
+
+        for (auto &worker : workers) {
+            worker.join();
         }
 
         return target;
@@ -211,12 +245,6 @@ namespace carver {
         cv::Mat target = carveImage();
         cv::imwrite(outputPath, target);
         log("Saved output image as " + outputPath);
-    }
-
-    void Carver::printStatus(int h, int v) {
-        string vStatus = v+1 > vIterations ? "READY" : to_string(v) + "/" + to_string(vIterations);
-        string hStatus = h+1 > hIterations ? "READY      " : to_string(h) + "/" + to_string(hIterations);
-        log("Processing column " + vStatus  + " and row " + hStatus , true);
     }
 
     cv::Mat Carver::carveImage() {
