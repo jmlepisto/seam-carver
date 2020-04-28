@@ -1,6 +1,6 @@
 # seam-carver
 #### Work in progress!
-OpenCV4 based utility for **efficient** content-aware scaling.
+OpenCV4 based utility for **efficient multi-threaded** content-aware scaling.
 Includes a basic wrapper for user control but the main focus is on the underlying `Carver` class which is used for the actual image processing. 
 Feel free to add any GUI bindings or an advanced CLI for easy usage.
 
