@@ -8,6 +8,9 @@
 *.jpg
 *.jpeg
 *.run
+*.pro
+*.a
+build/*
 !images/*.jpg
 carver
 CMakeCache.txt
