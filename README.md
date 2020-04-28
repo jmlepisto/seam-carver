@@ -1,6 +1,6 @@
 # seam-carver
 #### Work in progress!
-OpenCV4 based utility for **efficient** content-aware scaling.
+OpenCV4 based utility for **efficient multi-threaded** content-aware scaling.
 Includes a basic wrapper for user control but the main focus is on the underlying `Carver` class which is used for the actual image processing. 
 Feel free to add any GUI bindings or an advanced CLI for easy usage.
 
@@ -14,17 +14,19 @@ pick a method to assign an importance value to each pixel and then locate the le
 solution uses gradient magnitude (energy) as the importance value. Energies are updated each time a seam has been cut from 
 the image to achieve best possible quality.
 
-Asynchronous C++ threading and  OpenMP are both used for better performance. These features can be disabled by removing the define:
+Asynchronous C++ threading and  OpenMP are both used for performance gains. The effect of these really comes to shine when
+carving larger images in both directions.
 
-```#define CONCURRENT```
-
-Processing small images is quite swift but bear in mind that the actual complexity of this algorithm is in the range of
+Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm by image width and height is in the range of
 
 ![image](https://latex.codecogs.com/gif.latex?O%28W%24%5Ctimes%24H&plus;W&plus;H%29)
 
 #### How to get it?
-If you want to use this as a standalone program instead of including the code as part of your own project **cmake** is the recommended workflow.
-If you do not feel like building, some premade binaries will be attached to releases. Dependencies for the dynamically linked binaries are:
+**cmake** is the recommended workflow for building this project. The premade cmake definitions include diretives for building both a standalone app as well as a static library.
+
+
+If you do not feel like building, some premade binaries will be attached to [releases](https://github.com/jjstoo/seam-carver/releases).
+Dynamic dependencies are:
 
 ```
 libopencv_imgcodecs.so.4.3
