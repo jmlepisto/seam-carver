@@ -171,6 +171,13 @@ namespace carver {
          */
         void calculateCumulativePixel(int r, int c, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap);
 
+        /**
+         * @brief calculateCumulativePixelRange calculates cumulative energies for a range of rows
+         * @param r0 start row
+         * @param r1 end row
+         * @param energyMap energy map used for the calculation
+         * @param cumulativeEnergyMap target cumulative energy map
+         */
         void calculateCumulativePixelRange(int r0, int r1, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap);
 
         /**
