@@ -103,7 +103,6 @@ namespace carver {
         energyMap.row(0).copyTo(target.row(0));
 
         #ifdef CONCURRENT
-        log("Running with " +to_string(N_THREADS) + " threads");
         int chunkSize = energyMap.rows / N_THREADS;
         int leftOver = energyMap.rows % N_THREADS;
         for (int i = 0; i < N_THREADS; i++) {
