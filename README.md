@@ -23,8 +23,11 @@ Processing small images is quite swift but bear in mind that the actual complexi
 ![image](https://latex.codecogs.com/gif.latex?O%28W%24%5Ctimes%24H&plus;W&plus;H%29)
 
 #### How to get it?
-If you want to use this as a standalone program instead of including the code as part of your own project **cmake** is the recommended workflow.
-If you do not feel like building, some premade binaries will be attached to releases. Dependencies for the dynamically linked binaries are:
+**cmake** is the recommended workflow for building this project. The premade cmake definitions include diretives for building both a standalone app as well as a static library.
+
+
+If you do not feel like building, some premade binaries will be attached to [releases](https://github.com/jjstoo/seam-carver/releases).
+Dynamic dependencies are:
 
 ```
 libopencv_imgcodecs.so.4.3
