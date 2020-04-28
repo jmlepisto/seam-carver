@@ -14,7 +14,7 @@ pick a method to assign an importance value to each pixel and then locate the le
 solution uses gradient magnitude (energy) as the importance value. Energies are updated each time a seam has been cut from 
 the image to achieve best possible quality.
 
-Asynchronous C++ threading and  OpenMP are both used for performance gains. The effect of these really comes to shine when
+Asynchronous C++ processing and threading is used for performance gains. The effect of these really comes to shine when
 carving larger images in both directions.
 
 Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm by image width and height is in the range of
@@ -26,21 +26,12 @@ Processing reasonably sized images is quite swift but bear in mind that the actu
 
 
 If you do not feel like building, some premade binaries will be attached to [releases](https://github.com/jjstoo/seam-carver/releases).
-Dynamic dependencies are:
+Dynamic OpenCV dependencies are:
 
 ```
 libopencv_imgcodecs.so.4.3
-libopencv_imgproc.so.4.3 
-libopencv_core.so.4.3 
-libgomp.so.1 
-libpthread.so.0 
-libstdc++.so.6 
-libgcc_s.so.1 
-libc.so.6 
-libpng16.so.16 
-libz.so.1 
-libm.so.6 
-libdl.so.2 
+libopencv_imgproc.so.4.3
+libopencv_core.so.4.3
 ```
 
 #### Example output when running in vertical mode
