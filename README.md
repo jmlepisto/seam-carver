@@ -17,9 +17,9 @@ the image to achieve best possible quality.
 Asynchronous C++ processing and threading is used for performance gains. The effect of these really comes to shine when
 carving larger images in both directions.
 
-Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm by image width and height is in the range of
+Processing reasonably sized images is quite swift but bear in mind that the actual complexity of this algorithm by image width and height is in the range of *O(W × H + W + H)*.
 
-![image](https://latex.codecogs.com/gif.latex?O%28W%24%5Ctimes%24H&plus;W&plus;H%29)
+
 
 #### How to get it?
 **cmake** is the recommended workflow for building this project. The premade cmake definitions include diretives for building both a standalone app as well as a static library.
