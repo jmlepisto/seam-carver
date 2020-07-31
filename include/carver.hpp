@@ -13,6 +13,7 @@
 
 using namespace std;
 
+
 namespace carver {
     enum CarveMode {VERTICAL, HORIZONTAL, BOTH};
 
@@ -73,12 +74,41 @@ namespace carver {
         void carveImage(string outputPath);
 
         /**
+         * @brief calculateEnergy calculates energy map for the given image using crossed sobel filters
+         * @param source source grayscale image
+         * @return energy map
+         */
+        cv::Mat calculateEnergy(cv::Mat &source);
+
+        /**
+         * @brief calculateCumulativeEnergy calculates cumulative energy based on the given energy map
+         * @param energyMap energy map
+         * @return cumulative energy map
+         */
+        cv::Mat calculateCumulativeEnergy(cv::Mat &energyMap);
+
+        /**
+         * @brief calculateLowestEnergyPath calculates lowest energy path from top of the given cumulative energy map to the bottom
+         * @param cumulativeEnergyMap cumulative energy map
+         * @return vector containing the column indices of the lowest energy path from top to bottom
+         */
+        vector<int> calculateLowestEnergyPath(cv::Mat &cumulativeEnergyMap);
+
+        /**
          * @brief getSeamToRemove calculates the minimum energy seam from the given energy map
          * @param energyMap energy map for the image
          * @param direction seam direction, VERTICAL or HORIZONTAL
          * @return vector containing the indices for the lowest energy path in the given direction
          */
         vector<int> getSeamToRemove(cv::Mat &energyMap, CarveMode direction);
+
+        /**
+         * @brief removeSeam removes the given seam from the image from top to bottom
+         * @param source source image
+         * @param seam vertical seam indices
+         * @return reduced target image
+         */
+        cv::Mat removeSeam(cv::Mat &source, vector<int> seam);
 
         /**
          * @brief removeSeams removes the given seams from the source image and returns a reduced version
@@ -147,21 +177,6 @@ namespace carver {
          */
         void log(string message, bool overwrite);
 
-
-        /**
-         * @brief calculateEnergy calculates energy map for the given image using crossed sobel filters
-         * @param source source grayscale image
-         * @return energy map
-         */
-        cv::Mat calculateEnergy(cv::Mat &source);
-
-        /**
-         * @brief calculateCumulativeEnergy calculates cumulative energy based on the given energy map
-         * @param energyMap energy map
-         * @return cumulative energy map
-         */
-        cv::Mat calculateCumulativeEnergy(cv::Mat &energyMap);
-
         /**
          * @brief calculateCumulativePixel calculates cumulative energy for a single pixel
          * @param r row
@@ -179,21 +194,6 @@ namespace carver {
          * @param cumulativeEnergyMap target cumulative energy map
          */
         void calculateCumulativePixelRange(int r0, int r1, cv::Mat &energyMap, cv::Mat &cumulativeEnergyMap);
-
-        /**
-         * @brief calculateLowestEnergyPath calculates lowest energy path from top of the given cumulative energy map to the bottom
-         * @param cumulativeEnergyMap cumulative energy map
-         * @return vector containing the column indices of the lowest energy path from top to bottom
-         */
-        vector<int> calculateLowestEnergyPath(cv::Mat &cumulativeEnergyMap);
-
-        /**
-         * @brief removeSeam removes the given seam from the image from top to bottom
-         * @param source source image
-         * @param seam vertical seam indices
-         * @return reduced target image
-         */
-        cv::Mat removeSeam(cv::Mat &source, vector<int> seam);
 
         void printStatus(int h, int v);
 
