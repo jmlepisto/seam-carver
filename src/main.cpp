@@ -13,7 +13,8 @@ void usage() {
     cout << "-o        output path" << endl;
     cout << "input path has to be given as the last argument" << endl;
     cout << "Optional arguments:" << endl;
-    cout << "-p        carve amount, removes given proportion of pixels from side length (0-1)" << endl;
+    cout << "-p        carve amount, removes given proportion of pixels from " << endl;
+    cout << "          side length (0-1)" << endl;
     cout << "-c        carve amount, removes given number of pixels from side length" << endl;
     cout << "-v        add verbosity" << endl;
     cout << "-h        print this help" << endl;
@@ -26,13 +27,11 @@ void usage() {
 }
 
 
-bool cmdOptionExists(char** begin, char** end, const string& option)
-{
+bool cmdOptionExists(char** begin, char** end, const string& option) {
     return std::find(begin, end, option) != end;
 }
 
-char* getCmdOption(char ** begin, char ** end, const std::string & option, bool required)
-{
+char* getCmdOption(char ** begin, char ** end, const std::string & option, bool required) {
     if (!cmdOptionExists(begin,end,option) && required)
         terminate(1, "Command line option " + option + " missing");
 
@@ -41,7 +40,7 @@ char* getCmdOption(char ** begin, char ** end, const std::string & option, bool 
     {
         return *itr;
     }
-    return 0;
+    return nullptr;
 }
 
 void setCmdOptionsAndRun(carver::Carver &carver, int argc, char *argv[]) {
